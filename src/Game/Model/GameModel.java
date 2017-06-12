@@ -133,4 +133,11 @@ public class GameModel implements GameModelInterface {
 
         activeCard = null;
     }
+
+    @Override
+    public void untapAll() {
+        for (HeroCard heroCard: activePlayer.getDeck().getActiveHeroes()) {
+            heroCard.setTapped(false);
+        }
+    }
 }

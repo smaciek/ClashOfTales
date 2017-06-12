@@ -47,6 +47,11 @@ public class PTDeck implements DataProvider {
             ((HeroCard)currentCard).changeStrengthBy(strength);
         });
         Card podkmorzy = new HeroCard(Books.PAN_TADEUSZ, "Podkomorzy", 7, 9, (Card currentCard, Player currentPlayer, Player opponent)->{});
+
+
+
+
+
         Card swiatyniaDumania = new SpecialCard(Books.DZIADY,"Świątynia dumania", 2, (Card currentCard, Player currentPlayer, Player opponent)->{
             currentPlayer.getDeck().drawCard();
             currentPlayer.getDeck().drawCard();

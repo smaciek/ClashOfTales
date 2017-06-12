@@ -25,7 +25,6 @@ public class GameView {
 
     private Scene gameScene;
     private HBox hand;
-    //    private FlowPane playerActiveCards;
     private HBox playerActiveCards;
     private HBox opponentActiveCards;
 
@@ -36,25 +35,15 @@ public class GameView {
 
     private ActivePhases activePhase = ActivePhases.BEGINING;
 
-    //    public GameView() {
-//        GridPane gridPane = new GridPane();
-//
-//        this.gameScene = new Scene(gridPane, width, height);
-//        this.hand = new HBox();
-//        this.playerActiveCards = new FlowPane();
-//        this.opponentActiveCards = new HBox();
-//        gridPane.add(opponentActiveCards, 0, 0);
-//        gridPane.add(playerActiveCards, 0, 1);
-//        gridPane.add(hand, 0, 2);
-//        setPaddings();
-//        addExampleData();
-//    }
+
+
     public GameView() {
         BorderPane borderPane = new BorderPane();
+        AnchorPane anchorPane = new AnchorPane();
 
-        this.gameScene = new Scene(borderPane, width, height);
+//        this.gameScene = new Scene(borderPane, width, height);
+        this.gameScene = new Scene(anchorPane, width, height);
         this.hand = new HBox();
-//        this.playerActiveCards = new FlowPane();
         this.playerActiveCards = new HBox();
         this.opponentActiveCards = new HBox();
 
@@ -62,12 +51,46 @@ public class GameView {
         borderPane.setCenter(playerActiveCards);
         borderPane.setBottom(hand);
 
+        setAnchorPane(opponentActiveCards, 10, -1, 5, -1);
+        setAnchorPane(playerActiveCards, 215, -1, 5, -1);
+        setAnchorPane(hand, -1, 10, 140, -1);
+
+
+        anchorPane.getChildren().add(hand);
+        anchorPane.getChildren().add(opponentActiveCards);
+        anchorPane.getChildren().add(playerActiveCards);
 
         setPaddings();
-//        addExampleData();
+
+        Pane opponentIcon = createOpponentIcon();
+        setAnchorPane(opponentIcon, 10, -1, -1, 20);
+        anchorPane.getChildren().add(opponentIcon);
 
         this.drawCard = new Button("Draw Card");
         this.nextPhase = new Button("Dalej");
+    }
+
+    private Pane createOpponentIcon(){
+        GridPane gridPane = new GridPane();
+
+        BackgroundImage image = new BackgroundImage(new Image("/Game/View/player.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        gridPane.setBackground(new Background(image));
+
+        Text text = new Text();
+
+        gridPane.setOnMouseClicked(event -> {
+            if (activePhase.equals(ActivePhases.ATTACK) && controller.getActiveCard() != null){
+                controller.getDamage();
+            }
+        });
+        return gridPane;
+    }
+
+    private void setAnchorPane(Node node, double top, double bottom, double left, double right){
+        if (top>0)AnchorPane.setTopAnchor(node, top);
+        if (bottom>0)AnchorPane.setBottomAnchor(node, bottom);
+        if (left>0)AnchorPane.setLeftAnchor(node, left);
+        if (right>0)AnchorPane.setRightAnchor(node, right);
     }
 
     public GameView(GameControllerInterface.FromView controller) {
@@ -180,7 +203,7 @@ public class GameView {
 
             playerActiveCards.getChildren().add(cardView.getCard());
             cardView.getCard().setOnMouseClicked(event -> {
-                if (activePhase.equals(ActivePhases.ATTACK)){
+                if (activePhase.equals(ActivePhases.ATTACK) && !((HeroCard)cardView.getCardModel()).isTapped()){
                     controller.setActiveCard((HeroCard) cardView.getCardModel());
                 }
             });

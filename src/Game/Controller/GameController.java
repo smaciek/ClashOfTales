@@ -118,6 +118,11 @@ public class GameController implements GameControllerInterface.FromModel, GameCo
     }
 
     @Override
+    public void getDamage() {
+        model.getOpponent().getDamage(((HeroCard)model.getActiveCard()).getStrength());
+    }
+
+    @Override
     public void drawCard() {
         if (model.getActivePlayer().getDeck().getHand().size() < MAX_HAND) {
             model.getActivePlayer().getDeck().drawCard();
@@ -157,6 +162,11 @@ public class GameController implements GameControllerInterface.FromModel, GameCo
     @Override
     public void setAttackPhase() {
         gameView.setAttackPhase();
+    }
+
+    @Override
+    public void untap() {
+        model.untapAll();
     }
 
 

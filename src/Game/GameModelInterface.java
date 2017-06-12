@@ -28,4 +28,5 @@ public interface GameModelInterface {
 
     void fight(HeroCard selectedCard);
 
+    void untapAll();
 }

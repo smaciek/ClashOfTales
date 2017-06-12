@@ -4,18 +4,26 @@ package Game.Model.Cards;
 import Game.Model.Books;
 import Game.Model.Card;
 import Game.Model.Special;
-import com.sun.istack.internal.Nullable;
-
-import java.awt.print.Book;
 
 public class HeroCard extends Card {
     private final int basicStrength;
     private int strength;
     private Special special;
+    private boolean tapped = true;
 
 
-    public HeroCard(Books book, String name, int cost, int strength, @Nullable Special special) {
+    public HeroCard(Books book, String name, int cost, int strength,Special special) {
         this.book = book;
+        this.name = name;
+        this.cost = cost;
+        this.basicStrength = strength;
+        this.strength = strength;
+        this.special = special;
+    }
+
+    public HeroCard(Books book,String text, String name, int cost, int strength,Special special) {
+        this.book = book;
+        this.text = text;
         this.name = name;
         this.cost = cost;
         this.basicStrength = strength;
@@ -42,5 +50,11 @@ public class HeroCard extends Card {
         strength-=damage;
     }
 
+    public boolean isTapped() {
+        return tapped;
+    }
 
+    public void setTapped(boolean tapped) {
+        this.tapped = tapped;
+    }
 }

@@ -16,6 +16,8 @@ public interface GameControllerInterface {
         Card getActiveCard();
 
         void fight(HeroCard selectedCard);
+
+        void getDamage();
     }
     interface FromModel{
         void changePhase();
@@ -23,6 +25,8 @@ public interface GameControllerInterface {
 
         void setMainPhase();
         void setAttackPhase();
+
+        void untap();
 
     }
 }

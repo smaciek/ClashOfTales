@@ -9,6 +9,8 @@ public class EvaluationPhase implements Phase {
 
     public EvaluationPhase(GameControllerInterface.FromModel controller, Player activePlayer) {
         System.out.println("Evaluation Phase");
+
+        controller.untap();
     }
 
     @Override

@@ -22,6 +22,8 @@ public class DIIDeck implements DataProvider {
         Card zosia = new HeroCard(Books.DZIADY, "Zosia", 3, 7, null);
         Card guslarz = new HeroCard(Books.DZIADY, "Guślarz", 3, 7, null);
 
+
+
         Card lament = new SpecialCard(Books.DZIADY, "Lament", 1, null);
         Card coToBedzie = new SpecialCard(Books.DZIADY, "Co to będzie?", 2, null);
         Card odkupienie = new SpecialCard(Books.DZIADY, "Odkupienie", 2, null);

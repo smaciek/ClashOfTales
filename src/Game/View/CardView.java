@@ -6,6 +6,7 @@ import Game.Model.Cards.HeroCard;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class CardView {
@@ -37,11 +38,23 @@ public class CardView {
         if(card instanceof HeroCard){
             backgroundImage = new BackgroundImage(new Image("/Game/View/Template_stwor.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
             this.type = new Text("C");
+
+            if (((HeroCard)card).isTapped()){
+                this.strength.setUnderline(true);
+                this.strength.setFill(Color.RED);
+                this.name.setUnderline(true);
+            }
+            else{
+                this.strength.setUnderline(false);
+                this.name.setUnderline(false);
+
+            }
         }
         else{
             backgroundImage = new BackgroundImage(new Image("/Game/View/Template_czar.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
             this.type = new Text("S");
         }
+
         createCard();
         setSize();
         setPaddings();
