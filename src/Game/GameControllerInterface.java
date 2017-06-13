@@ -25,8 +25,17 @@ public interface GameControllerInterface {
 
         void setMainPhase();
         void setAttackPhase();
+        void setBeginningPhase();
+        void setEvaluationPhase();
 
         void untap();
+
+        void setMana();
+
+        void setActivePlayerLife();
+        void setOpponentLife();
+
+        void endGame();
 
     }
 }

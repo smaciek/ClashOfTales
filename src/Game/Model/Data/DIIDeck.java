@@ -34,14 +34,18 @@ public class DIIDeck implements DataProvider {
         Card gorycz = new SpecialCard(Books.DZIADY, "Gorycz", 6, null);
         Card aKysz = new SpecialCard(Books.DZIADY, "A Kysz!", 8, (Card currentCard, Player currentPlayer, Player opponent)->{
 
-            int times = currentPlayer.getActiveCards().size();
-            for (int i=0;i<times;i++){
-                currentPlayer.getDeck().moveActiveCardTooCementary(currentPlayer.getActiveCards().get(0));
-                System.out.print(i+ "");
+            if (currentPlayer.getDeck().getActiveHeroes().size()>0) {
+                int times = currentPlayer.getActiveCards().size();
+                for (int i = 0; i < times; i++) {
+                    currentPlayer.getDeck().moveActiveCardTooCementary(currentPlayer.getActiveCards().get(0));
+                }
             }
 
-            for (int i=0;i<opponent.getActiveCards().size();i++){
-                opponent.getDeck().moveActiveCardTooCementary(currentPlayer.getActiveCards().get(0));
+            if (opponent.getDeck().getActiveHeroes().size()>0) {
+
+                for (int i = 0; i < opponent.getActiveCards().size(); i++) {
+                    opponent.getDeck().moveActiveCardTooCementary(currentPlayer.getActiveCards().get(0));
+                }
             }
         });
 

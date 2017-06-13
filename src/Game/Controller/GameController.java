@@ -13,6 +13,8 @@ import Game.Model.Phases.MainPhase;
 import Game.View.CardView;
 import Game.View.GameView;
 import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,6 @@ public class GameController implements GameControllerInterface.FromModel, GameCo
     public static int MAX_HAND = 5;
     public static int MAX_ACTIVE = 5;
 
-    private Game game;
     private String player1Name = "Player1";
     private String player2Name = "Player2";
 
@@ -32,7 +33,6 @@ public class GameController implements GameControllerInterface.FromModel, GameCo
     private GameModelInterface model;
     private GameView gameView;
 
-    private Player currentPlayer;
     private Phase currentPhase;
 
     private int roundNumber = 1;
@@ -53,30 +53,9 @@ public class GameController implements GameControllerInterface.FromModel, GameCo
         this.view = view;
         model = new GameModel(this, player1Name, Decks.DZIADY, player2Name, Decks.PAN_TADEUSZ);
 
-//            exampleOppnnteCards();
-
-//        model.getPlayer1().getDeck().drawCard();
-//        model.getPlayer1().getDeck().drawCard();
-//        model.getPlayer1().getDeck().drawCard();
-
-
         showBoard();
 
         view.setScene(gameScene);
-//        view.showActiveCards(
-//                makeListOfHeroCardViews(model.getPlayer1Deck().getActiveHeroes()),
-//                makeListOfHeroCardViews(model.getPlayer2Deck().getActiveHeroes()));
-
-//        while (model.isSomeoneDead()){
-//            model.changePlayer();
-//            model.startBeginningPhase(roundNumber);
-//            model.startMainPhase(roundNumber);
-//            model.startAttackPhase(roundNumber);
-//            cycleNumber++;
-//            if (cycleNumber>0 && cycleNumber%2 ==0)roundNumber++;
-//
-//            System.out.print(roundNumber);
-//        }
 
 
         currentPhase = new BeginningPhase(this, model.getActivePlayer(), roundNumber);
@@ -84,9 +63,6 @@ public class GameController implements GameControllerInterface.FromModel, GameCo
 
     @Override
     public void changePhase() {
-//        currentPhase = phase;
-//        currentPhase.startPhase();
-
         if (currentPhase instanceof BeginningPhase) currentPhase = new MainPhase(this, model.getActivePlayer());
         else if (currentPhase instanceof MainPhase) currentPhase = new AttackPhase(this, model.getActivePlayer());
         else if (currentPhase instanceof AttackPhase) currentPhase = new EvaluationPhase(this, model.getActivePlayer());
@@ -114,12 +90,19 @@ public class GameController implements GameControllerInterface.FromModel, GameCo
     @Override
     public void fight(HeroCard selectedCard) {
         System.out.println("FIGHT");
+        ((HeroCard) model.getActiveCard()).setTapped(true);
         model.fight(selectedCard);
+
     }
 
     @Override
     public void getDamage() {
+        ((HeroCard) model.getActiveCard()).setTapped(true);
         model.getOpponent().getDamage(((HeroCard)model.getActiveCard()).getStrength());
+        gameView.setOpponentLife(model.getOpponent().getLife());
+
+        showBoard();
+        System.out.println("Damage");
     }
 
     @Override
@@ -134,19 +117,11 @@ public class GameController implements GameControllerInterface.FromModel, GameCo
     public void playCard(CardView cardView) {
         if (cardView.getCardModel() instanceof SpecialCard || model.getActivePlayer().getActiveCards().size() < MAX_ACTIVE) {
             model.getActivePlayer().playCard(cardView.getCardModel(), model.getOpponent());
+            gameView.setMana(model.getActivePlayer().getMana());
             showBoard();
         }
     }
 
-    private void exampleOppnnteCards() {
-        model.getOpponent().getDeck().drawCard();
-        model.getOpponent().getDeck().drawCard();
-        model.getOpponent().getDeck().drawCard();
-        model.getOpponent().playCard(model.getOpponent().getHand().remove(0), model.getActivePlayer());
-        model.getOpponent().playCard(model.getOpponent().getHand().remove(1), model.getActivePlayer());
-        model.getOpponent().playCard(model.getOpponent().getHand().remove(2), model.getActivePlayer());
-        gameView.changeOpponentActiveCards(makeListOfHeroCardViews(model.getOpponent().getActiveCards()));
-    }
 
     public void showBoard() {
         gameView.changePlayerActiveCards(makeListOfHeroCardViews(model.getActivePlayer().getActiveCards()));
@@ -165,10 +140,45 @@ public class GameController implements GameControllerInterface.FromModel, GameCo
     }
 
     @Override
+    public void setBeginningPhase() {
+        gameView.setBeginningPhase();
+    }
+
+    @Override
+    public void setEvaluationPhase() {
+        gameView.setEvaluationPhase();
+    }
+
+    @Override
     public void untap() {
         model.untapAll();
     }
 
+    @Override
+    public void setMana() {
+        gameView.setMana(model.getActivePlayer().getMana());
+    }
+
+    @Override
+    public void setActivePlayerLife() {
+        gameView.setActivePlayerLife(model.getActivePlayer().getLife());
+    }
+
+    @Override
+    public void setOpponentLife() {
+        gameView.setOpponentLife(model.getOpponent().getLife());
+    }
+
+    @Override
+    public void endGame() {
+        GridPane pane = new GridPane();
+        pane.setMinSize(1024, 600);
+        Text text = new Text("Koniec gry!\n Wygrał gracz: " + model.getActivePlayer().getName());
+
+        pane.add(text, 0, 0);
+        Scene endScene = new Scene(pane);
+        view.setScene(endScene);
+    }
 
     private List<CardView> makeListOfHeroCardViews(List<HeroCard> listOfHeroCards) {
         List<CardView> out = new ArrayList<>();
@@ -195,6 +205,5 @@ public class GameController implements GameControllerInterface.FromModel, GameCo
         }
         return out;
     }
-
 }
 

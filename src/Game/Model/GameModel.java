@@ -24,13 +24,12 @@ public class GameModel implements GameModelInterface {
 
     private HeroCard activeCard = null;
 
-//    private Board board;
 
     public GameModel(GameControllerInterface.FromModel controller, String player1Name, Decks player1Deck, String player2Name, Decks player2Deck) {
         this.controller = controller;
-        this.player1 = new Player(player1Name, getDeck(player1Deck));
-        this.player2 = new Player(player2Name, getDeck(player2Deck));
-//        this.board = new Board(player1, player2);
+        this.player1 = new Player(player1Name, getDeck(player1Deck), controller);
+        this.player2 = new Player(player2Name, getDeck(player2Deck), controller);
+
 
         this.activePlayer = player1;
         this.opponent = player2;

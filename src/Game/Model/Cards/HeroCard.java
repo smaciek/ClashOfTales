@@ -46,9 +46,6 @@ public class HeroCard extends Card {
         strength+=change;
     }
 
-    private void getDamage(int damage){
-        strength-=damage;
-    }
 
     public boolean isTapped() {
         return tapped;

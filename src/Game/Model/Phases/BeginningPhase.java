@@ -2,7 +2,6 @@ package Game.Model.Phases;
 
 
 import Game.GameControllerInterface;
-import Game.Model.Board;
 import Game.Model.Phase;
 import Game.Model.Player;
 
@@ -14,6 +13,10 @@ public class BeginningPhase implements Phase {
         this.controller = controller;
         activePlayer.startRound(roundNumber+100);
         activePlayer.getDeck().drawCard();
+        controller.setMana();
+        controller.setActivePlayerLife();
+        controller.setOpponentLife();
+        controller.setBeginningPhase();
         controller.showBoard();
 //        controller.changePhase();
 

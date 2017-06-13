@@ -1,8 +1,6 @@
 package Game.Model.Phases;
 
 import Game.GameControllerInterface;
-import Game.Model.Board;
-import Game.Model.Card;
 import Game.Model.Phase;
 import Game.Model.Player;
 

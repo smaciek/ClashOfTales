@@ -24,8 +24,5 @@ public class SpecialCard extends Card {
 
     }
 
-    public void playCard(){
-
-    }
 
 }

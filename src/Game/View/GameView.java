@@ -33,70 +33,55 @@ public class GameView {
 
     private Text text = new Text();
 
+    private Text opponentLife;
+    private Text activePlayerLife;
+    private Text activePlayerMana;
+
     private ActivePhases activePhase = ActivePhases.BEGINING;
 
 
+//    public GameView() {
+//        BorderPane borderPane = new BorderPane();
+//        AnchorPane anchorPane = new AnchorPane();
+//
+////        this.gameScene = new Scene(borderPane, width, height);
+//        this.gameScene = new Scene(anchorPane, width, height);
+//        this.hand = new HBox();
+//        this.playerActiveCards = new HBox();
+//        this.opponentActiveCards = new HBox();
+//
+//        borderPane.setTop(opponentActiveCards);
+//        borderPane.setCenter(playerActiveCards);
+//        borderPane.setBottom(hand);
+//
+//        setAnchorPane(opponentActiveCards, 10, -1, 5, -1);
+//        setAnchorPane(playerActiveCards, 215, -1, 5, -1);
+//        setAnchorPane(hand, -1, 10, 140, -1);
+//
+//
+//        anchorPane.getChildren().add(hand);
+//        anchorPane.getChildren().add(opponentActiveCards);
+//        anchorPane.getChildren().add(playerActiveCards);
+//
+//        setPaddings();
+//
+//
+//        Pane opponentIcon = createOpponentIcon();
+//        setAnchorPane(opponentIcon, 10, -1, -1, 20);
+//        anchorPane.getChildren().add(opponentIcon);
+//
+//        this.drawCard = new Button("Draw Card");
+//        this.nextPhase = new Button("Dalej");
+//    }
 
-    public GameView() {
+    public GameView(GameControllerInterface.FromView controller) {
+
         BorderPane borderPane = new BorderPane();
         AnchorPane anchorPane = new AnchorPane();
 
+
 //        this.gameScene = new Scene(borderPane, width, height);
         this.gameScene = new Scene(anchorPane, width, height);
-        this.hand = new HBox();
-        this.playerActiveCards = new HBox();
-        this.opponentActiveCards = new HBox();
-
-        borderPane.setTop(opponentActiveCards);
-        borderPane.setCenter(playerActiveCards);
-        borderPane.setBottom(hand);
-
-        setAnchorPane(opponentActiveCards, 10, -1, 5, -1);
-        setAnchorPane(playerActiveCards, 215, -1, 5, -1);
-        setAnchorPane(hand, -1, 10, 140, -1);
-
-
-        anchorPane.getChildren().add(hand);
-        anchorPane.getChildren().add(opponentActiveCards);
-        anchorPane.getChildren().add(playerActiveCards);
-
-        setPaddings();
-
-        Pane opponentIcon = createOpponentIcon();
-        setAnchorPane(opponentIcon, 10, -1, -1, 20);
-        anchorPane.getChildren().add(opponentIcon);
-
-        this.drawCard = new Button("Draw Card");
-        this.nextPhase = new Button("Dalej");
-    }
-
-    private Pane createOpponentIcon(){
-        GridPane gridPane = new GridPane();
-
-        BackgroundImage image = new BackgroundImage(new Image("/Game/View/player.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        gridPane.setBackground(new Background(image));
-
-        Text text = new Text();
-
-        gridPane.setOnMouseClicked(event -> {
-            if (activePhase.equals(ActivePhases.ATTACK) && controller.getActiveCard() != null){
-                controller.getDamage();
-            }
-        });
-        return gridPane;
-    }
-
-    private void setAnchorPane(Node node, double top, double bottom, double left, double right){
-        if (top>0)AnchorPane.setTopAnchor(node, top);
-        if (bottom>0)AnchorPane.setBottomAnchor(node, bottom);
-        if (left>0)AnchorPane.setLeftAnchor(node, left);
-        if (right>0)AnchorPane.setRightAnchor(node, right);
-    }
-
-    public GameView(GameControllerInterface.FromView controller) {
-        BorderPane borderPane = new BorderPane();
-
-        this.gameScene = new Scene(borderPane, width, height);
         this.hand = new HBox();
 //        this.playerActiveCards = new FlowPane();
         this.playerActiveCards = new HBox();
@@ -117,17 +102,99 @@ public class GameView {
         addDrawCardButton(borderPane);
         addChangePhaseButton(borderPane);
         setBackground(borderPane);
+        setBackground(anchorPane);
+
+
+        setAnchorPane(opponentActiveCards, 10, -1, 5, -1);
+        setAnchorPane(playerActiveCards, 205, -1, 5, -1);
+        setAnchorPane(hand, 400, -1, 140, -1);
+
+        setAnchorPane(nextPhase, -1, 100, -1, 20);
+        setAnchorPane(drawCard, -1, 80, -1, 20);
+
+
+        anchorPane.getChildren().add(hand);
+        anchorPane.getChildren().add(opponentActiveCards);
+        anchorPane.getChildren().add(playerActiveCards);
+        anchorPane.getChildren().add(nextPhase);
+        anchorPane.getChildren().add(drawCard);
+
+        Pane opponentIcon = createOpponentIcon();
+        setAnchorPane(opponentIcon, 10, -1, -1, 20);
+        anchorPane.getChildren().add(opponentIcon);
+
+        initializeTexts(anchorPane);
     }
+
+    private void initializeTexts(AnchorPane anchorPane){
+        opponentLife = new Text("Życie");
+        activePlayerLife = new Text("Życie");
+        activePlayerMana = new Text("Mana");
+
+        setAnchorPane(opponentLife, 125, -1, -1, 34);
+        setAnchorPane(activePlayerLife, -1, 120, 34, -1);
+        setAnchorPane(activePlayerMana, -1, 50, 34, -1);
+
+        anchorPane.getChildren().add(opponentLife);
+        anchorPane.getChildren().add(activePlayerLife);
+        anchorPane.getChildren().add(activePlayerMana);
+    }
+
+    public void setMana(int mana){
+        activePlayerMana.setText(Integer.toString(mana));
+    }
+
+
+    public void setActivePlayerLife(int life){
+        activePlayerLife.setText(Integer.toString(life));
+    }
+
+    public void setOpponentLife(int life){
+        opponentLife.setText(Integer.toString(life));
+    }
+
+    private Pane createOpponentIcon() {
+        GridPane gridPane = new GridPane();
+        gridPane.setMinSize(94, 94);
+
+        BackgroundImage image = new BackgroundImage(new Image("/Game/View/player.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        gridPane.setBackground(new Background(image));
+
+        gridPane.setOnMouseClicked(event -> {
+            if (activePhase.equals(ActivePhases.ATTACK) && controller.getActiveCard() != null && !((HeroCard)controller.getActiveCard()).isTapped()) {
+                controller.getDamage();
+            }
+        });
+        return gridPane;
+    }
+
+    private void setAnchorPane(Node node, double top, double bottom, double left, double right) {
+        if (top > 0) AnchorPane.setTopAnchor(node, top);
+        if (bottom > 0) AnchorPane.setBottomAnchor(node, bottom);
+        if (left > 0) AnchorPane.setLeftAnchor(node, left);
+        if (right > 0) AnchorPane.setRightAnchor(node, right);
+    }
+
+
 
     public void showText(String text) {
         this.text.setText(text);
     }
 
-    public void setMainPhase(){
+    public void setMainPhase() {
         activePhase = ActivePhases.MAIN;
     }
-    public void setAttackPhase(){
+
+    public void setAttackPhase() {
         activePhase = ActivePhases.ATTACK;
+    }
+
+    public void setBeginningPhase(){
+        activePhase = ActivePhases.BEGINING;
+    }
+
+    public void setEvaluationPhase(){
+        activePhase = ActivePhases.EVALUATION;
     }
 
     private void setMinHeight() {
@@ -150,23 +217,6 @@ public class GameView {
         opponentActiveCards.setSpacing(5);
     }
 
-    private void addExampleData() {
-        CardView view1 = new CardView("Name11", "1", "Strength11", "Text11");
-        CardView view12 = new CardView("Name12", "7", "Strength12", "Text12");
-        CardView view21 = new CardView("Name21", "3", "Strength21", "Text21");
-        CardView view22 = new CardView("Name22", "6", "Strength22", "Text22");
-        CardView view23 = new CardView("Name23", "0", "Strength23", "Text23");
-        CardView view31 = new CardView("Name31", "9", "Strength31", "Text31");
-        CardView view32 = new CardView("Name32", "4", "Strength32", "Text32");
-
-        hand.getChildren().add(view1.getCard());
-        hand.getChildren().add(view12.getCard());
-        playerActiveCards.getChildren().add(view21.getCard());
-        playerActiveCards.getChildren().add(view22.getCard());
-        playerActiveCards.getChildren().add(view23.getCard());
-        opponentActiveCards.getChildren().add(view31.getCard());
-        opponentActiveCards.getChildren().add(view32.getCard());
-    }
 
     /*TODO
     Usunąć przycisk ciągnięcia karty
@@ -190,7 +240,7 @@ public class GameView {
         for (CardView cardView : activeCards) {
             opponentActiveCards.getChildren().add(cardView.getCard());
             cardView.getCard().setOnMouseClicked(event -> {
-                if (activePhase.equals(ActivePhases.ATTACK) && controller.getActiveCard() != null){
+                if (activePhase.equals(ActivePhases.ATTACK) && controller.getActiveCard() != null) {
                     controller.fight((HeroCard) cardView.getCardModel());
                 }
             });
@@ -203,7 +253,7 @@ public class GameView {
 
             playerActiveCards.getChildren().add(cardView.getCard());
             cardView.getCard().setOnMouseClicked(event -> {
-                if (activePhase.equals(ActivePhases.ATTACK) && !((HeroCard)cardView.getCardModel()).isTapped()){
+                if (activePhase.equals(ActivePhases.ATTACK) && !((HeroCard) cardView.getCardModel()).isTapped()) {
                     controller.setActiveCard((HeroCard) cardView.getCardModel());
                 }
             });
