@@ -3,8 +3,6 @@ package Game.View;
 import Game.Controller.GameController;
 import Game.GameControllerInterface;
 import Game.GameViewInterface;
-import Game.Model.Card;
-import Game.Model.Cards.HeroCard;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -17,6 +15,10 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
+
+/**
+ * Klasa główna, reprezentująca widok menu po uruchomieniu gry.
+ */
 public class MainGameView extends Application implements GameViewInterface {
 
     private double width = 1024;
@@ -52,7 +54,6 @@ public class MainGameView extends Application implements GameViewInterface {
         primaryStage.setTitle("Clash of Tales");
 
 
-
         this.startScene = new Scene(makeStartGridPane(), width, height);
 
         primaryStage.setScene(startScene);
@@ -60,60 +61,56 @@ public class MainGameView extends Application implements GameViewInterface {
         primaryStage.show();
     }
 
-    @Override
-    public void showActiveCards(List<CardView> player1ActiveCards, List<CardView> player2ActiveCards) {
+    public void setStartScene() {
+        mainStage.setScene(startScene);
 
     }
 
 
-    private void setBackground(Pane pane){
+    private void setBackground(Pane pane) {
         BackgroundImage image = new BackgroundImage(new Image("/Game/View/Menu_bck.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
         pane.setBackground(new Background(image));
     }
 
-    private void initGame(){
+    private void initGame() {
         controller = new GameController();
-        //controller.startGame(this);
 
     }
 
-    private void initializeView(){
+    private void initializeView() {
         start = new Button("Start");
         start.setOnAction(event -> {
-            if(event.getSource()==start){
-                //mainStage.setScene(gameScene);
+            if (event.getSource() == start) {
                 controller.startGame(this);
-            }});
+            }
+        });
         start.setMinWidth(130);
         end = new Button("Wyjdź");
+        end.setOnAction(event -> {
+            mainStage.close();
+
+        });
         end.setMinWidth(130);
     }
 
 
-
-    @Override
-    public void setScene(Scene scene) {
-        mainStage.setScene(scene);
-    }
-
-    @Override
-    public void showText(String text) {
-
-    }
-
-
-    private GridPane makeStartGridPane(){
+    private GridPane makeStartGridPane() {
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.BOTTOM_CENTER);
         gridPane.setHgap(10);
         gridPane.setVgap(10);
-        gridPane.setPadding(new Insets(25,25,25,25));
+        gridPane.setPadding(new Insets(25, 25, 25, 25));
 
 
-        gridPane.add(start,0,1);
-        gridPane.add(end,0,2);
+        gridPane.add(start, 0, 1);
+        gridPane.add(end, 0, 2);
 
         setBackground(gridPane);
         return gridPane;
+    }
+
+    @Override
+    public void setScene(Scene scene) {
+        mainStage.setScene(scene);
     }
 }

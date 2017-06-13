@@ -1,19 +1,24 @@
 package Game.Controller;
 
 import Game.GameControllerInterface;
+import Game.GameModelInterface;
 import Game.GameViewInterface;
-import Game.Model.*;
+import Game.Model.Card;
 import Game.Model.Cards.HeroCard;
 import Game.Model.Cards.SpecialCard;
-import Game.GameModelInterface;
+import Game.Model.Decks;
+import Game.Model.GameModel;
+import Game.Model.Phase;
 import Game.Model.Phases.AttackPhase;
 import Game.Model.Phases.BeginningPhase;
 import Game.Model.Phases.EvaluationPhase;
 import Game.Model.Phases.MainPhase;
 import Game.View.CardView;
 import Game.View.GameView;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
@@ -63,14 +68,21 @@ public class GameController implements GameControllerInterface.FromModel, GameCo
 
     @Override
     public void changePhase() {
-        if (currentPhase instanceof BeginningPhase) currentPhase = new MainPhase(this, model.getActivePlayer());
-        else if (currentPhase instanceof MainPhase) currentPhase = new AttackPhase(this, model.getActivePlayer());
-        else if (currentPhase instanceof AttackPhase) currentPhase = new EvaluationPhase(this, model.getActivePlayer());
-        else if (currentPhase instanceof EvaluationPhase && !model.isSomeoneDead()) {
+        if (currentPhase instanceof BeginningPhase) {
+            currentPhase = new MainPhase(this, model.getActivePlayer());
+            gameView.setButtonText("Przejdź do ataku");
+        } else if (currentPhase instanceof MainPhase) {
+            currentPhase = new AttackPhase(this, model.getActivePlayer());
+            gameView.setButtonText("Zakończ atak");
+        } else if (currentPhase instanceof AttackPhase) {
+            currentPhase = new EvaluationPhase(this, model.getActivePlayer());
+            gameView.setButtonText("Zakończ turę gracza");
+        } else if (currentPhase instanceof EvaluationPhase && !model.isSomeoneDead()) {
             model.changePlayer();
             cycleNumber++;
             if (cycleNumber > 0 && cycleNumber % 2 == 0) roundNumber++;
             currentPhase = new BeginningPhase(this, model.getActivePlayer(), roundNumber);
+            gameView.setButtonText("Rozpocznij turę gracza");
             showBoard();
         }
 
@@ -98,7 +110,7 @@ public class GameController implements GameControllerInterface.FromModel, GameCo
     @Override
     public void getDamage() {
         ((HeroCard) model.getActiveCard()).setTapped(true);
-        model.getOpponent().getDamage(((HeroCard)model.getActiveCard()).getStrength());
+        model.getOpponent().getDamage(((HeroCard) model.getActiveCard()).getStrength());
         gameView.setOpponentLife(model.getOpponent().getLife());
 
         showBoard();
@@ -127,6 +139,9 @@ public class GameController implements GameControllerInterface.FromModel, GameCo
         gameView.changePlayerActiveCards(makeListOfHeroCardViews(model.getActivePlayer().getActiveCards()));
         gameView.changeOpponentActiveCards(makeListOfHeroCardViews(model.getOpponent().getActiveCards()));
         gameView.changePlayerHand(makeListOfCardViews(model.getActivePlayer().getHand()));
+
+        setOpponentLife();
+        setActivePlayerLife();
     }
 
     @Override
@@ -172,12 +187,20 @@ public class GameController implements GameControllerInterface.FromModel, GameCo
     @Override
     public void endGame() {
         GridPane pane = new GridPane();
+        pane.setAlignment(Pos.BOTTOM_CENTER);
         pane.setMinSize(1024, 600);
         Text text = new Text("Koniec gry!\n Wygrał gracz: " + model.getActivePlayer().getName());
 
         pane.add(text, 0, 0);
+        setBackground(pane);
+
         Scene endScene = new Scene(pane);
         view.setScene(endScene);
+    }
+
+    private void setBackground(Pane pane) {
+        BackgroundImage image = new BackgroundImage(new Image("/Game/View/Menu_bck.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        pane.setBackground(new Background(image));
     }
 
     private List<CardView> makeListOfHeroCardViews(List<HeroCard> listOfHeroCards) {

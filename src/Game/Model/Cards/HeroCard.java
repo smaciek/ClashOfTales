@@ -5,6 +5,10 @@ import Game.Model.Books;
 import Game.Model.Card;
 import Game.Model.Special;
 
+/**
+ * Klasa reprezentująca kartę stronnika
+ */
+
 public class HeroCard extends Card {
     private final int basicStrength;
     private int strength;
@@ -12,7 +16,7 @@ public class HeroCard extends Card {
     private boolean tapped = true;
 
 
-    public HeroCard(Books book, String name, int cost, int strength,Special special) {
+    public HeroCard(Books book, String name, int cost, int strength, Special special) {
         this.book = book;
         this.name = name;
         this.cost = cost;
@@ -21,7 +25,7 @@ public class HeroCard extends Card {
         this.special = special;
     }
 
-    public HeroCard(Books book,String text, String name, int cost, int strength,Special special) {
+    public HeroCard(Books book, String text, String name, int cost, int strength, Special special) {
         this.book = book;
         this.text = text;
         this.name = name;
@@ -37,13 +41,13 @@ public class HeroCard extends Card {
     }
 
 
-    public boolean hit(int damage){
+    public boolean hit(int damage) {
         changeStrengthBy(-damage);
-        return strength>0;
+        return strength > 0;
     }
 
-    public void changeStrengthBy(int change){
-        strength+=change;
+    public void changeStrengthBy(int change) {
+        strength += change;
     }
 
 

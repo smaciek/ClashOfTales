@@ -12,8 +12,11 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 
-
 import java.util.List;
+
+/**
+ * Klasa reprezentująca widok w trakcie gry.
+ */
 
 public class GameView {
     private int width = 1024;
@@ -40,50 +43,14 @@ public class GameView {
     private ActivePhases activePhase = ActivePhases.BEGINING;
 
 
-//    public GameView() {
-//        BorderPane borderPane = new BorderPane();
-//        AnchorPane anchorPane = new AnchorPane();
-//
-////        this.gameScene = new Scene(borderPane, width, height);
-//        this.gameScene = new Scene(anchorPane, width, height);
-//        this.hand = new HBox();
-//        this.playerActiveCards = new HBox();
-//        this.opponentActiveCards = new HBox();
-//
-//        borderPane.setTop(opponentActiveCards);
-//        borderPane.setCenter(playerActiveCards);
-//        borderPane.setBottom(hand);
-//
-//        setAnchorPane(opponentActiveCards, 10, -1, 5, -1);
-//        setAnchorPane(playerActiveCards, 215, -1, 5, -1);
-//        setAnchorPane(hand, -1, 10, 140, -1);
-//
-//
-//        anchorPane.getChildren().add(hand);
-//        anchorPane.getChildren().add(opponentActiveCards);
-//        anchorPane.getChildren().add(playerActiveCards);
-//
-//        setPaddings();
-//
-//
-//        Pane opponentIcon = createOpponentIcon();
-//        setAnchorPane(opponentIcon, 10, -1, -1, 20);
-//        anchorPane.getChildren().add(opponentIcon);
-//
-//        this.drawCard = new Button("Draw Card");
-//        this.nextPhase = new Button("Dalej");
-//    }
-
     public GameView(GameControllerInterface.FromView controller) {
 
         BorderPane borderPane = new BorderPane();
         AnchorPane anchorPane = new AnchorPane();
 
-
-//        this.gameScene = new Scene(borderPane, width, height);
         this.gameScene = new Scene(anchorPane, width, height);
         this.hand = new HBox();
-//        this.playerActiveCards = new FlowPane();
+
         this.playerActiveCards = new HBox();
         this.opponentActiveCards = new HBox();
 
@@ -95,10 +62,10 @@ public class GameView {
 
         setMinHeight();
         setPaddings();
-//        addExampleData();
+
         this.controller = controller;
         this.drawCard = new Button("Draw Card");
-        this.nextPhase = new Button("Dalej");
+        this.nextPhase = new Button("Rozpocznij turę gracza");
         addDrawCardButton(borderPane);
         addChangePhaseButton(borderPane);
         setBackground(borderPane);
@@ -126,7 +93,7 @@ public class GameView {
         initializeTexts(anchorPane);
     }
 
-    private void initializeTexts(AnchorPane anchorPane){
+    private void initializeTexts(AnchorPane anchorPane) {
         opponentLife = new Text("Życie");
         activePlayerLife = new Text("Życie");
         activePlayerMana = new Text("Mana");
@@ -140,16 +107,16 @@ public class GameView {
         anchorPane.getChildren().add(activePlayerMana);
     }
 
-    public void setMana(int mana){
+    public void setMana(int mana) {
         activePlayerMana.setText(Integer.toString(mana));
     }
 
 
-    public void setActivePlayerLife(int life){
+    public void setActivePlayerLife(int life) {
         activePlayerLife.setText(Integer.toString(life));
     }
 
-    public void setOpponentLife(int life){
+    public void setOpponentLife(int life) {
         opponentLife.setText(Integer.toString(life));
     }
 
@@ -161,7 +128,7 @@ public class GameView {
         gridPane.setBackground(new Background(image));
 
         gridPane.setOnMouseClicked(event -> {
-            if (activePhase.equals(ActivePhases.ATTACK) && controller.getActiveCard() != null && !((HeroCard)controller.getActiveCard()).isTapped()) {
+            if (activePhase.equals(ActivePhases.ATTACK) && controller.getActiveCard() != null && !((HeroCard) controller.getActiveCard()).isTapped()) {
                 controller.getDamage();
             }
         });
@@ -176,7 +143,6 @@ public class GameView {
     }
 
 
-
     public void showText(String text) {
         this.text.setText(text);
     }
@@ -189,11 +155,11 @@ public class GameView {
         activePhase = ActivePhases.ATTACK;
     }
 
-    public void setBeginningPhase(){
+    public void setBeginningPhase() {
         activePhase = ActivePhases.BEGINING;
     }
 
-    public void setEvaluationPhase(){
+    public void setEvaluationPhase() {
         activePhase = ActivePhases.EVALUATION;
     }
 
@@ -260,9 +226,6 @@ public class GameView {
         }
     }
 
-    /*TODO TU JEST ZAGRYWANIE KARTAMI
-     *
-     */
 
     public void changePlayerHand(List<CardView> newHand) {
         hand.getChildren().clear();
@@ -279,5 +242,10 @@ public class GameView {
 
     public Scene getGameScene() {
         return gameScene;
+    }
+
+    public void setButtonText(String s) {
+        this.nextPhase.setText(s);
+
     }
 }

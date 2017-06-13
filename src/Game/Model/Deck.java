@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+
+/**
+ * Klasa reprezentująca talię kart
+ */
 public class Deck {
     private List<Card> deck;
     private List<Card> hand;
@@ -29,55 +33,49 @@ public class Deck {
         this.random = new Random();
     }
 
-    public Deck(String name, List<Card> deck) {
-        this.name = name;
-        this.deck = deck;
-        this.items = new ArrayList<>();
-    }
 
-    public void add(Card card){
+    public void add(Card card) {
         deck.add(card);
     }
 
-    public void add(List<Card> cards){
+    public void add(List<Card> cards) {
         deck.addAll(cards);
     }
 
-    public void addItem(HeroCard card){
+    public void addItem(HeroCard card) {
         items.add(card);
     }
 
-    public void playItem(HeroCard item){
+    public void playItem(HeroCard item) {
         activeHeroes.add(item);
     }
 
-    public Card drawCard(){
+    public Card drawCard() {
         Card card = null;
-        if(deck.size()>0 && hand.size()< GameController.MAX_HAND) {
+        if (deck.size() > 0 && hand.size() < GameController.MAX_HAND) {
             card = deck.remove(random.nextInt(deck.size()));
             hand.add(card);
         }
 
         return card;
     }
-    public void moveActiveCardTooCementary(HeroCard card){
-        int index = activeHeroes.indexOf(card);
+
+    public void moveActiveCardTooCementary(HeroCard card) {
         cementary.add(card);
         activeHeroes.remove(card);
     }
 
-    public void moveToCementary(Card card){
+    public void moveToCementary(Card card) {
         moveTo(card, cementary);
     }
 
-    public void moveCard(Card card, List<Card> source, List<Card> destination){
+    public void moveCard(Card card, List<Card> source, List<Card> destination) {
         int index = source.indexOf(card);
         destination.add(source.remove(index));
     }
 
 
-
-    public void moveTo(Card card, List<Card> destination){
+    public void moveTo(Card card, List<Card> destination) {
         destination.add(card);
     }
 
@@ -105,7 +103,7 @@ public class Deck {
         return activeHeroes;
     }
 
-    private String buildString(){
+    private String buildString() {
         StringBuilder builder = new StringBuilder();
         builder.append(name);
         builder.append(":\n");

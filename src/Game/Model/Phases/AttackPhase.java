@@ -4,23 +4,15 @@ import Game.GameControllerInterface;
 import Game.Model.Phase;
 import Game.Model.Player;
 
+/**
+ * Klasa reprezentująca fazę ataku
+ */
+
 public class AttackPhase implements Phase {
 
 
     public AttackPhase(GameControllerInterface.FromModel controller, Player activePlayer) {
-        System.out.println("Attack Phase");
         controller.setAttackPhase();
     }
 
-    @Override
-    public void startPhase(Player activePlayer, int roundNumber) {
-
-        System.out.println("Koniec fazy Ataku");
-
-    }
-
-    @Override
-    public void endPhase() {
-
-    }
 }

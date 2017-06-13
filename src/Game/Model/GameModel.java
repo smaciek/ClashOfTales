@@ -1,17 +1,19 @@
 package Game.Model;
 
-import Game.*;
+import Game.GameControllerInterface;
+import Game.GameModelInterface;
 import Game.Model.Cards.HeroCard;
 import Game.Model.Data.DIIDeck;
 import Game.Model.Data.PTDeck;
-import Game.Model.Phases.AttackPhase;
-import Game.Model.Phases.BeginningPhase;
-import Game.Model.Phases.MainPhase;
 
 import java.util.Random;
 
+/**
+ * Klasa przechowująca stan gry
+ */
+
 public class GameModel implements GameModelInterface {
-    private Random random;
+    private Random random = new Random();
     private GameControllerInterface.FromModel controller;
 
     private Player player1;
@@ -19,8 +21,6 @@ public class GameModel implements GameModelInterface {
 
     private Player activePlayer;
     private Player opponent;
-
-    private Phase activePhase;
 
     private HeroCard activeCard = null;
 
@@ -36,14 +36,12 @@ public class GameModel implements GameModelInterface {
     }
 
 
-
-
     @Override
-    public void changePlayer(){
-        if (activePlayer.equals(player1)){
+    public void changePlayer() {
+        if (activePlayer.equals(player1)) {
             activePlayer = player2;
             opponent = player1;
-        }else {
+        } else {
             activePlayer = player1;
             opponent = player2;
         }
@@ -51,8 +49,8 @@ public class GameModel implements GameModelInterface {
 
 
     @Override
-    public boolean isSomeoneDead(){
-        return activePlayer.getLife()<=0 || opponent.getLife() <= 0;
+    public boolean isSomeoneDead() {
+        return activePlayer.getLife() <= 0 || opponent.getLife() <= 0;
     }
 
 
@@ -87,9 +85,9 @@ public class GameModel implements GameModelInterface {
         return opponent;
     }
 
-    private Deck getDeck(Decks decks){
+    private Deck getDeck(Decks decks) {
         DataProvider dataProvider;
-        switch (decks){
+        switch (decks) {
             case DZIADY:
                 dataProvider = new DIIDeck();
                 break;
@@ -98,9 +96,9 @@ public class GameModel implements GameModelInterface {
                 break;
 
             default:
-                if(random.nextBoolean()){
+                if (random.nextBoolean()) {
                     dataProvider = new DIIDeck();
-                }else {
+                } else {
                     dataProvider = new PTDeck();
                 }
 
@@ -116,15 +114,15 @@ public class GameModel implements GameModelInterface {
         this.activeCard = activeCard;
     }
 
-    public void fight(HeroCard selectedCard){
+    public void fight(HeroCard selectedCard) {
 
         int activeCardStrength = activeCard.getStrength();
         int selectedCardStrength = selectedCard.getStrength();
 
-        if(!selectedCard.hit(activeCardStrength)){
+        if (!selectedCard.hit(activeCardStrength)) {
             getOpponent().getDeck().moveActiveCardTooCementary(selectedCard);
         }
-        if(!activeCard.hit(selectedCardStrength)){
+        if (!activeCard.hit(selectedCardStrength)) {
             getActivePlayer().getDeck().moveActiveCardTooCementary(activeCard);
         }
 
@@ -135,7 +133,7 @@ public class GameModel implements GameModelInterface {
 
     @Override
     public void untapAll() {
-        for (HeroCard heroCard: activePlayer.getDeck().getActiveHeroes()) {
+        for (HeroCard heroCard : activePlayer.getDeck().getActiveHeroes()) {
             heroCard.setTapped(false);
         }
     }

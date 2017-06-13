@@ -4,6 +4,9 @@ import Game.Model.Books;
 import Game.Model.Card;
 import Game.Model.Special;
 
+/**
+ * Klasa reprezentująca kartę specjalną
+ */
 
 public class SpecialCard extends Card {
 

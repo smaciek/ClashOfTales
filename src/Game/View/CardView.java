@@ -9,6 +9,10 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
+
+/**
+ * Klasa reprezentująca graficzną reprezentację karty
+ */
 public class CardView {
     private BackgroundImage backgroundImage;
     private Card cardModel;
@@ -28,29 +32,30 @@ public class CardView {
         setSize();
         setPaddings();
     }
+
     public CardView(Card card, String name, String cost, String strength, String text) {
         this.name = new Text(name);
         this.cost = new Text(cost);
         this.strength = new Text(strength);
         this.text = new Text(text);
+        this.text.setWrappingWidth(120);
         this.cardModel = card;
 
-        if(card instanceof HeroCard){
+        if (card instanceof HeroCard) {
             backgroundImage = new BackgroundImage(new Image("/Game/View/Template_stwor.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
             this.type = new Text("C");
 
-            if (((HeroCard)card).isTapped()){
+            if (((HeroCard) card).isTapped()) {
                 this.strength.setUnderline(true);
                 this.strength.setFill(Color.RED);
                 this.name.setUnderline(true);
-            }
-            else{
+            } else {
                 this.strength.setUnderline(false);
                 this.name.setUnderline(false);
+                this.strength.setFill(Color.BLACK);
 
             }
-        }
-        else{
+        } else {
             backgroundImage = new BackgroundImage(new Image("/Game/View/Template_czar.jpg"), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
             this.type = new Text("S");
         }
@@ -64,14 +69,14 @@ public class CardView {
         return card;
     }
 
-    private void setSize(){
-        card.setMinSize(135,190);
+    private void setSize() {
+        card.setMinSize(135, 190);
         card.setPrefSize(135, 190);
         card.setMaxSize(135, 190);
     }
 
-    private void setPaddings(){
-        card.setPadding(new Insets(0,0,0,0));
+    private void setPaddings() {
+        card.setPadding(new Insets(0, 0, 0, 0));
 
     }
 
@@ -83,7 +88,7 @@ public class CardView {
 //        card.setStyle("-fx-background-color: #FFFFFF");
 //    }
 
-    private void createCard(){
+    private void createCard() {
         card = new AnchorPane();
 //        HBox hbox = new HBox(name, strength);
 //
@@ -121,7 +126,7 @@ public class CardView {
         AnchorPane.setTopAnchor(strength, 9.0);
         AnchorPane.setRightAnchor(strength, 10.0);
 
-        AnchorPane.setTopAnchor(text, 40.0);
+        AnchorPane.setTopAnchor(text, 80.0);
         AnchorPane.setLeftAnchor(text, 5.0);
 
         AnchorPane.setLeftAnchor(cost, 45.0);

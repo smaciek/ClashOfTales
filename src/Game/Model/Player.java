@@ -1,11 +1,14 @@
 package Game.Model;
 
-import Game.Model.Cards.HeroCard;
 import Game.GameControllerInterface;
+import Game.Model.Cards.HeroCard;
 
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Klasa reprezentująca gracza
+ */
 public class Player {
     private static final int START_LIFE = 30;
     private static final int START_HAND_CARD_NUMBER = 1;
@@ -25,6 +28,7 @@ public class Player {
         this.deck = deck;
         addToHand(START_HAND_CARD_NUMBER);
     }
+
     public Player(String name, Deck deck, GameControllerInterface.FromModel contoroller) {
         this.controller = contoroller;
         this.life = START_LIFE;
@@ -41,17 +45,18 @@ public class Player {
 
     public void getDamage(int damage) {
         life -= damage;
-        if (life<=0){
+        if (life <= 0) {
             controller.endGame();
         }
     }
 
     public void playCard(Card card, Player opponent) {
-        if(card.cost<=mana) {
-            mana-=card.cost;
+        if (card.cost <= mana) {
+            mana -= card.cost;
             deck.getHand().remove(card);
             if (card instanceof HeroCard) deck.getActiveHeroes().add((HeroCard) card);
             if (card.getSpecial() != null) card.getSpecial().activate(card, this, opponent);
+            controller.showBoard();
         }
     }
 

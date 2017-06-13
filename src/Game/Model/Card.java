@@ -24,7 +24,7 @@ public abstract class Card {
         return text;
     }
 
-    public void useSpecial(Player currentPlayer, Player opponent){
+    public void useSpecial(Player currentPlayer, Player opponent) {
         special.activate(this, currentPlayer, opponent);
     }
 
