@@ -55,27 +55,6 @@ public class GameModel implements GameModelInterface {
 
 
     @Override
-    public Player getPlayer1() {
-        return player1;
-    }
-
-
-    @Override
-    public Player getPlayer2() {
-        return player2;
-    }
-
-    @Override
-    public Deck getPlayer1Deck() {
-        return player1.getDeck();
-    }
-
-    @Override
-    public Deck getPlayer2Deck() {
-        return player2.getDeck();
-    }
-
-    @Override
     public Player getActivePlayer() {
         return activePlayer;
     }

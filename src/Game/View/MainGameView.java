@@ -13,8 +13,6 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.util.List;
-
 
 /**
  * Klasa główna, reprezentująca widok menu po uruchomieniu gry.

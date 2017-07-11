@@ -24,6 +24,9 @@ import javafx.scene.text.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Klasa kontorolera gry
+ */
 
 public class GameController implements GameControllerInterface.FromModel, GameControllerInterface.FromView {
     public static int MAX_HAND = 5;
@@ -139,6 +142,8 @@ public class GameController implements GameControllerInterface.FromModel, GameCo
         gameView.changePlayerActiveCards(makeListOfHeroCardViews(model.getActivePlayer().getActiveCards()));
         gameView.changeOpponentActiveCards(makeListOfHeroCardViews(model.getOpponent().getActiveCards()));
         gameView.changePlayerHand(makeListOfCardViews(model.getActivePlayer().getHand()));
+
+        gameView.changeOpponentHand(makeListOfCardViews(model.getOpponent().getHand()));
 
         setOpponentLife();
         setActivePlayerLife();

@@ -1,9 +1,6 @@
 package Game;
 
-import Game.View.CardView;
 import javafx.scene.Scene;
-
-import java.util.List;
 
 /**
  * Interfejs główngo widoku.

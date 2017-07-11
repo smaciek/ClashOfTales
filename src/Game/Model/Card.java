@@ -1,6 +1,8 @@
 package Game.Model;
 
-
+/**
+ * Klasa abstrakcyjna reprezentująca uogólnienie karty
+ */
 public abstract class Card {
     protected int cost;
     protected String name;

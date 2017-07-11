@@ -57,9 +57,9 @@ public class PTDeck implements DataProvider {
         });
 
 
-        Card swiatyniaDumania = new SpecialCard(Books.DZIADY, "Świątynia dumania", 2, (Card currentCard, Player currentPlayer, Player opponent) -> {
-            currentPlayer.getDeck().drawCard();
-            currentPlayer.getDeck().drawCard();
+        Card swiatyniaDumania = new SpecialCard(Books.DZIADY,"Dobierasz 2 karty", "Świątynia dumania", 2, (Card currentCard, Player currentPlayer, Player opponent) -> {
+            if (currentPlayer.getDeck().getHand().size() < 5)currentPlayer.getDeck().drawCard();
+            if (currentPlayer.getDeck().getHand().size() < 5)currentPlayer.getDeck().drawCard();
         });
         Card wSzeregu = new SpecialCard(Books.PAN_TADEUSZ, "Przywołuje na pole bitwy 3 Chłopów o sile 1", "W szeregu!", 7, (Card currentCard, Player currentPlayer, Player opponent) -> {
             if (currentPlayer.getDeck().getActiveHeroes().size() < 5)

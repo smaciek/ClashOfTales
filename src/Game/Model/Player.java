@@ -11,7 +11,7 @@ import java.util.Random;
  */
 public class Player {
     private static final int START_LIFE = 30;
-    private static final int START_HAND_CARD_NUMBER = 1;
+    private static final int START_HAND_CARD_NUMBER = 2;
 
     private int life;
     private int mana = 0;

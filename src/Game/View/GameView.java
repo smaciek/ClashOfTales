@@ -23,6 +23,7 @@ public class GameView {
     private int height = 600;
 
     private double minCardHeight = 190;
+    private double cardWidth = 135;
 
     private GameControllerInterface.FromView controller;
 
@@ -30,6 +31,10 @@ public class GameView {
     private HBox hand;
     private HBox playerActiveCards;
     private HBox opponentActiveCards;
+
+
+    private VBox opponentHandList;
+
 
     private Button drawCard;
     private Button nextPhase;
@@ -53,6 +58,9 @@ public class GameView {
 
         this.playerActiveCards = new HBox();
         this.opponentActiveCards = new HBox();
+
+
+        this.opponentHandList = new VBox();
 
         borderPane.setTop(opponentActiveCards);
         borderPane.setCenter(playerActiveCards);
@@ -86,11 +94,28 @@ public class GameView {
         anchorPane.getChildren().add(nextPhase);
         anchorPane.getChildren().add(drawCard);
 
+
+        preareOpponentHand();
+        setOpponentHandVisible(true);
+
+        anchorPane.getChildren().add(opponentHandList);
+
+
         Pane opponentIcon = createOpponentIcon();
         setAnchorPane(opponentIcon, 10, -1, -1, 20);
         anchorPane.getChildren().add(opponentIcon);
 
         initializeTexts(anchorPane);
+    }
+
+    private void setOpponentHandVisible(boolean isVisible) {
+        if (isVisible) {
+            opponentHandList.setStyle("-fx-background-color: WHITE");
+        }
+    }
+
+    private void preareOpponentHand() {
+        setAnchorPane(opponentHandList, 20, -1, -1, cardWidth + 10);
     }
 
     private void initializeTexts(AnchorPane anchorPane) {
@@ -167,6 +192,7 @@ public class GameView {
         hand.setMinHeight(minCardHeight);
         opponentActiveCards.setMinHeight(minCardHeight);
         playerActiveCards.setMinHeight(minCardHeight);
+
     }
 
     private void setBackground(Pane pane) {
@@ -175,12 +201,17 @@ public class GameView {
     }
 
     private void setPaddings() {
-        hand.setPadding(new Insets(1, 20, 1, 20));
-        hand.setSpacing(5);
-        playerActiveCards.setPadding(new Insets(1, 20, 1, 20));
-        playerActiveCards.setSpacing(5);
-        opponentActiveCards.setPadding(new Insets(1, 20, 1, 20));
-        opponentActiveCards.setSpacing(5);
+        int spacing = 5;//bylo 5
+        int sidePadding = 20;
+        hand.setPadding(new Insets(1, sidePadding, 1, sidePadding));
+        hand.setSpacing(spacing);
+        playerActiveCards.setPadding(new Insets(1, sidePadding, 1, sidePadding));
+        playerActiveCards.setSpacing(spacing);
+        opponentActiveCards.setPadding(new Insets(1, sidePadding, 1, sidePadding));
+        opponentActiveCards.setSpacing(spacing);
+
+        opponentHandList.setPadding(new Insets(5, 5, 5, 5));
+        opponentHandList.setSpacing(spacing);
     }
 
 
@@ -238,6 +269,20 @@ public class GameView {
                 }
             });
         }
+    }
+
+
+    public void changeOpponentHand(List<CardView> newHand) {
+        opponentHandList.getChildren().clear();
+        Text text = new Text("Ręka przeciwnika:");
+        text.setUnderline(true);
+        opponentHandList.getChildren().add(text);
+
+        for (CardView cardView : newHand) {
+            Text cardName = new Text(cardView.getCardModel().getName());
+            opponentHandList.getChildren().add(cardName);
+        }
+
     }
 
     public Scene getGameScene() {
